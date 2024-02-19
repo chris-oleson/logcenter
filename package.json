@@ -10,13 +10,14 @@
     },
     "dependencies": {
         "pinia": "^2.1.7",
+        "pinia-plugin-persistedstate": "^3.2.1",
         "vue": "^3.4.15",
         "vue-router": "^4.2.5"
-        },
+    },
     "devDependencies": {
+        "@vitejs/plugin-vue": "^5.0.3",
         "eslint": "^8.56.0",
         "eslint-plugin-vue": "^9.20.1",
-        "@vitejs/plugin-vue": "^5.0.3",
         "vite": "^5.1.0"
     }
 }

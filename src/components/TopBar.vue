@@ -1,7 +1,9 @@
 <template>
     <div class="top-bar">
-        <img class="logo" src="/src/assets/logo.png">
-        <div class="logo">LogCenter</div>
+        <router-link class="logo" to="/">
+            <img src="/src/assets/logo.png">
+            <h2>LogCenter</h2>
+        </router-link>
     </div>
 </template>
 
@@ -11,14 +13,13 @@
 
 <style scoped>
     .top-bar {
-        display: flex;
-        align-items: center;
-        height: 50px;
+        height: 7vh;
         box-shadow: var(--shadow);
     }
 
     .logo {
-        font-size: 24px;
+        display: inline-flex;
+        align-items: center;
     }
 
     img {
