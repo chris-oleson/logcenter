@@ -1,24 +1,42 @@
 <template>
-    <button @click="logTypes.push({})">+</button>
-    <div v-for="logType of store.logTypes">
-        <input :value="logType.type" @change="logType.type = $event.target.value"/>
-        <input type="color" :value="logType.color" @change="logType.color = $event.target.value"/>
-        <button @click="logTypes.splice(logTypes.indexOf(logType), 1)">-</button>
-    </div>
-
     <div class="logs">
-        <div v-for="log in logs" class="log" :style="'background-color: ' + getColor(log.type)">
+        <Dropdown label="Type" :default="filterType" :options="logTypes"></Dropdown>
+        
+        <div v-for="log in logs" v-bind:key="log" class="log" :style="`background-color: ${getColor(log.type)}; color: ${getText(log.type)};`">
             <div>{{ log.type }}</div>
             <div>{{ log.message }}</div>
             <div>{{ log.timestamp }}</div>
+        </div>
+
+        <div style="text-align: right;">
+            <Dropdown label="Show" :default="showNumber" :options="numbers"></Dropdown>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from '/src/pinia'
 const store = useStore()
+import tinycolor from "tinycolor2";
+import Dropdown from '/src/components/Dropdown'
+
+const showNumber = ref('10')
+const numbers = [
+    10,
+    25,
+    50,
+    100
+]
+
+const filterType = ref('All')
+const logTypes = computed(() => {
+    let types = ['All']
+    for (let logType of store.logTypes) {
+        types.push(logType.type)
+    }
+    return types
+})
 
 function getColor(type) {
     for (let logType of store.logTypes) {
@@ -27,6 +45,16 @@ function getColor(type) {
         }
     }
     return store.defaultColor
+}
+
+function getText(type) {
+    let color = tinycolor(getColor(type))
+    if (color.getBrightness() < 128) {
+        return ('#ffffff')
+    }
+    else {
+        return '#000000'
+    }
 }
 
 const logs = [
@@ -54,16 +82,24 @@ const logs = [
 </script>
 
 <style scoped>
-    .logs {
-        margin: 24px;
-    }
+label {
+    margin-bottom: 24px;
+    margin-right: 24px;
+    display: inline-block;
+}
 
-    .log {
-        border-radius: 5px;
-        margin: 5px;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        box-shadow: var(--shadow);
-    }
+.logs {
+    margin: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border-radius: 5px;
+}
+
+.log {
+    border-radius: 5px;
+    margin: 5px 0px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
 </style>
