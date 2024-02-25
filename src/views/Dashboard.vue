@@ -1,71 +1,72 @@
 <template>
-    <div class="logs">
-        <Dropdown label="Type" :default="filterType" :options="logTypes"></Dropdown>
-        
-        <div v-for="log in logs" v-bind:key="log" class="log" :style="`background-color: ${getColor(log.type)}; color: ${getText(log.type)};`">
-            <div>{{ log.type }}</div>
-            <div>{{ log.message }}</div>
-            <div>{{ log.timestamp }}</div>
+    <v-card elevation="4" class="ma-8 pa-8">
+        <div style="width: 300px">
+            <v-text-field v-model="search" density="compact" prepend-inner-icon="mdi-magnify" label="Search" single-line variant="outlined" hide-details></v-text-field>
         </div>
 
-        <div style="text-align: right;">
-            <Dropdown label="Show" :default="showNumber" :options="numbers"></Dropdown>
-        </div>
-    </div>
+        <v-data-table density="compact" :search="search" :headers="headers" :items="logs" class="font-weight-light mt-4" items-per-page-text="Show">
+            <template v-slot:item="{ item }">
+                <tr :style="`background-color: ${getColor(item.type)};`">
+                    <td class="py-2 px-4">{{ item.timestamp }}</td>
+                    <td class="py-2 px-4">{{ item.message }}</td>
+                    <td class="py-2 px-4" style="text-align: right;">{{ item.type }}</td>
+                </tr>
+            </template>
+
+            <template v-slot:bottom>
+                <v-pagination v-model="page" :length="pageCount" density="compact" class="mt-4"></v-pagination>
+            </template>
+        </v-data-table>
+    </v-card>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useStore } from '/src/pinia'
 const store = useStore()
-import tinycolor from "tinycolor2";
-import Dropdown from '/src/components/Dropdown'
 
-const showNumber = ref('10')
-const numbers = [
-    10,
-    25,
-    50,
-    100
-]
-
-const filterType = ref('All')
-const logTypes = computed(() => {
-    let types = ['All']
-    for (let logType of store.logTypes) {
-        types.push(logType.type)
-    }
-    return types
+const search = ref('')
+const page = ref(1)
+const itemsPerPage = 10
+const pageCount = computed(() => {
+    return Math.ceil(logs.length / itemsPerPage)
 })
 
 function getColor(type) {
     for (let logType of store.logTypes) {
-        if (logType.type == type) {
+        if (logType.type.toLowerCase() == type.toLowerCase()) {
             return logType.color
         }
     }
     return store.defaultColor
 }
 
-function getText(type) {
-    let color = tinycolor(getColor(type))
-    if (color.getBrightness() < 128) {
-        return ('#ffffff')
-    }
-    else {
-        return '#000000'
-    }
-}
+const headers = [
+    {
+        key: 'timestamp',
+        title: 'Timestamp',
+        minWidth: '180px'
+    },
+    {
+        key: 'message',
+        title: 'Message',
+    },
+    {
+        key: 'type',
+        title: 'Type',
+        align: 'end',
+    },
+]
 
 const logs = [
     {
         timestamp: '2/19/2024, 8:02:27 AM',
-        type: 'success',
-        message: 'this is good',
+        type: 'Success',
+        message: 'this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good this is good',
     },
     {
         timestamp: '2/19/2024, 8:02:27 AM',
-        type: 'error',
+        type: 'Error',
         message: 'this is not good',
     },
     {
@@ -75,31 +76,8 @@ const logs = [
     },
     {
         timestamp: '2/19/2024, 8:02:27 AM',
-        type: 'error',
+        type: 'Error',
         message: 'this is not good',
     },
 ]
 </script>
-
-<style scoped>
-label {
-    margin-bottom: 24px;
-    margin-right: 24px;
-    display: inline-block;
-}
-
-.logs {
-    margin: 24px;
-    padding: 24px;
-    box-shadow: var(--shadow);
-    border-radius: 5px;
-}
-
-.log {
-    border-radius: 5px;
-    margin: 5px 0px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-</style>
