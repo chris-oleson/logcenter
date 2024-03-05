@@ -34,7 +34,7 @@ const pageCount = computed(() => {
 
 function getColor(type) {
     for (let logType of store.logTypes) {
-        if (logType.type.toLowerCase() == type.toLowerCase()) {
+        if (logType.name.toLowerCase() == type.toLowerCase()) {
             return logType.color
         }
     }

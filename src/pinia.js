@@ -3,20 +3,17 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('store', {
     state: () => ({
         defaultColor: '#c4c4c4',
-        logTypes: [
+        logTypes: [],
+        views: [
             {
-                type: 'success',
-                color: '#acffa8'
-            },
-            {
-                type: 'error',
-                color: '#ffc2c2'
-            },
+                name: 'Dashboard',
+                path: '/',
+                icon: 'mdi-view-dashboard'
+            }
         ]
     }),
 
     actions: {
 
     },
-    persist: true,
 })

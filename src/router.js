@@ -15,7 +15,7 @@ export const router = createRouter({
             }
         },
         {
-            path: '/dashboard',
+            path: '/',
             component: Dashboard,
             meta: {
                 title: 'Dashboard - LogCenter'
