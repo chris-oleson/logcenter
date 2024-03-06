@@ -18,8 +18,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
+import Dashboard from '/src/views/Dashboard'
 import { useStore } from '/src/pinia'
 const store = useStore()
 
@@ -31,15 +33,17 @@ const newView = ref({
 })
 
 const page = computed(() => {
-    if (route.path == '/') {
-        return 0
-    }
-    else {
-        return 1
-    }
+    return route.path.substring(1)
 })
 
 function addView() {
+    router.addRoute({
+        path: '/' + store.views.length,
+        component: Dashboard,
+        meta: {
+            title: newView.value.name + ' - LogCenter'
+        }
+    })
     store.views.push({
         name: newView.value.name,
         path: '/' + store.views.length,

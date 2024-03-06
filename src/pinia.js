@@ -7,7 +7,7 @@ export const useStore = defineStore('store', {
         views: [
             {
                 name: 'Dashboard',
-                path: '/',
+                path: '/0',
                 icon: 'mdi-view-dashboard'
             }
         ]
@@ -16,4 +16,6 @@ export const useStore = defineStore('store', {
     actions: {
 
     },
+
+    persist: true
 })

@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <TopBar></TopBar>
-        <SideBar v-if="route.path == '/'"></SideBar>
+        <SideBar></SideBar>
         <v-main>
             <RouterView></RouterView>
         </v-main>
