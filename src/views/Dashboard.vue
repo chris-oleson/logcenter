@@ -1,7 +1,5 @@
 <template>
     <v-card elevation="4" class="ma-8 pa-8">
-        <div>{{ props.name }}</div>
-
         <div style="width: 300px">
             <v-text-field v-model="search" density="compact" prepend-inner-icon="mdi-magnify" label="Search" single-line variant="outlined" hide-details></v-text-field>
         </div>
@@ -23,10 +21,9 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from 'vue'
+import { ref, computed } from 'vue'
 import { useStore } from '/src/pinia'
 const store = useStore()
-const props = defineProps(['name'])
 
 const search = ref('')
 const page = ref(1)

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Settings from '/src/views/Settings'
 import PageNotFound from '/src/views/PageNotFound'
+import Dashboard from '/src/views/Dashboard'
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -20,5 +21,16 @@ export const router = createRouter({
                 title: 'Settings - LogCenter'
             }
         },
+        {
+            path: '/',
+            component: Settings,
+            meta: {
+                title: 'Home - LogCenter'
+            }
+        },
+        {
+            path: '/view/:view',
+            component: Dashboard,
+        }
     ]
 })
